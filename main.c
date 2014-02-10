@@ -62,12 +62,17 @@
 +			Cuentas[i].idCuenta=i; /*Guardo el identificador de la cuenta*/
 +			Cuentas[i].monto=valorIni; /*Guardo el valor inicial de cada cuenta*/
 +		}
+
 +		printf("Creando threads...\n"); 
 +		    for (i=0; i<nroHilos; i++) 
 +	      		{ 
 +				Threads[i].idThread= i; 
 +				pthread_create(&h,NULL,realizarTransferencia,(void *)&Threads[i]);
 +			      } 
+        for (i=0; i<nroHilos; i++) 
++	      		{ 
+       pthread_join(tidpro,NULL);
+            }
 +	
 +	return 0;
 +	
