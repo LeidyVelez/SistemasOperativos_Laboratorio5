@@ -44,7 +44,6 @@ t_Cuentas Cuentas[MAX_CUENTAS];
 
 /*----------------------------------------------------------------------------------------*/
 
-
 int main(int argc, char *argv[]){
         pthread_attr_t attr;
          pthread_attr_init (&attr);
@@ -70,8 +69,7 @@ int main(int argc, char *argv[]){
                 Cuentas[i].semaforo=true; /*Guardo el semaforo de cada cuenta*/
 	}
 	printf("Creando threads...\n"); 
-        //nCuentas[1]= nroCuentas;
-	    for (i=0; i<nroHilos; i++) 
+            for (i=0; i<nroHilos; i++) 
       		{  
 			pthread_create(&h[i],NULL,realizarTransferencia,NULL);
 		      } 
@@ -79,6 +77,12 @@ int main(int argc, char *argv[]){
       		{ 
               pthread_join(h[i],NULL);
            }
+        /*Se Imprime el valor de las cuentas y el balance total*/  
+        printf("Valor de la Cuenta1 después de la transferencia: %d \n",Cuentas[cuenta1].monto);
+	printf("Valor de la cuenta2 después de la transferencia: %d \n",Cuentas[numcuenta2].monto);
+	montoTotalCuentas= (Cuentas[cuenta1].monto)+(Cuentas[numcuenta2].monto);
+	printf("\nBalance total de las cuentas: %d", montoTotalCuentas);
+  printf("\FINALIZÓ....\n");
   printf("\nacabo....\n");
 return 0;
 
@@ -90,18 +94,18 @@ void *realizarTransferencia(void *p){
         printf("\nEn transferencia....");
         srand(rand());
         int nTranferencias=cantCorrer;
-//el while es para el manejo de numero de transacciones que ara que sera igual el tiempo a corre
-//que se ingresa como parametro
+//el while es para el manejo de número de transacciones que hará que sera igual el tiempo que corre
+	//que se ingresa como parámetro
         while (nTranferencias>0){  
-        int cuenta1=(rand()%nroCuentas)+1;
-        int numcuenta1=(rand()%nroCuentas)+1;
-        int numcuenta2=(rand()%nroCuentas)+1;
-        int montoTrasferencia=(rand()%Cuentas[numcuenta1].monto)+1;
+        cuenta1=(rand()%nroCuentas)+1;
+        numcuenta1=(rand()%nroCuentas)+1;
+        numcuenta2=(rand()%nroCuentas)+1;
+        montoTrasferencia=(rand()%Cuentas[cuenta1].monto)+1;
     	
 	if(Cuentas[cuenta1].semaforo){
             Cuentas[cuenta1].semaforo=false;
-//se uso un semaforo interno dentro de cada cuenta para poder ver si se puede acceder a ella
-//si ingresa ala primero pero no puede entrar ala segunda libera la primera y vuelve a intentar 
+//se usa un semaforo interno dentro de cada cuenta para poder ver si se puede acceder a ella
+//si ingresa ala primera pero no puede entrar ala segunda libera la primera y vuelve a intentar 
 //cuando las 2 tienen exito hace la transferencia
             if(Cuentas[numcuenta2].semaforo){
                 Cuentas[numcuenta2].semaforo=false;
@@ -109,8 +113,6 @@ void *realizarTransferencia(void *p){
                   printf("numero transfer %d \ncuenta2 antes %d \n",nTranferencias,Cuentas[numcuenta2].monto);
 		Cuentas[cuenta1].monto=Cuentas[cuenta1].monto-montoTrasferencia;
                 Cuentas[numcuenta2].monto=Cuentas[numcuenta2].monto+montoTrasferencia;
-                  printf("cuenta 1 despues %d \n",Cuentas[cuenta1].monto);
-                  printf("cuenta 2 despues %d \n",Cuentas[numcuenta2].monto);
               Cuentas[numcuenta2].semaforo=true;
               nTranferencias--;
             }
