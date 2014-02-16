@@ -53,10 +53,5 @@ Explique cómo piensa utilizar las primitivas ofrecidas por el sistemas operativ
 
 4. Compare la solución inicial y la solución final.
 
-5. EL TRABAJO DEBERÁ SER REALIZADO EN PAREJAS!
 
-6. Suba el trabajo realizado a GitHub, incluyendo el código del programa, el programa de prueba y archivos de prueba.
 
-7. TODA LA DOCUMENTACIÓN SOLICITADA deberá estar también en github, utilizando una página de presentación o la wiki.
-
-8. NO SE RECIBIRÁ NADA POR CORREO ELECTRÓNICO.
