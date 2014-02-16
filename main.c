@@ -69,23 +69,23 @@ int main(int argc, char *argv[]){
 	nroCuentas=atoi(numeroCuentas);
 	valorIni=atoi(valorInicial);
 	if((nroHilos<=0)|| (cantCorrer<=0)|| (nroCuentas<=0) || (valorIni<=0)){printf("Ingrese valores de parámetros mayores que cero!!");return;}
-	printf("Creando Cuentas...\n"); 
+	//printf("Creando Cuentas...\n"); 
 	for(i=0; i<=nroCuentas;i++){
 		Cuentas[i].idCuenta=i; /*Guardo el identificador de la cuenta*/
 		Cuentas[i].monto=valorIni; /*Guardo el valor inicial de cada cuenta*/
                 Cuentas[i].semaforo=true; /*Guardo el semaforo de cada cuenta*/
 	}
-	printf("Creando threads...\n"); 
+	//printf("Creando threads...\n"); 
             for (i=0; i<nroHilos; i++) 
       		{  
 			pthread_create(&h[i],NULL,realizarTransferencia,NULL);
 		      } 
-       for (i=0; i<nroHilos; i++) 
+            for (i=0; i<nroHilos; i++) 
       		{ 
-              pthread_join(h[i],NULL);
-           }
+                  pthread_join(h[i],NULL);
+                }
         /*Se Imprime el valor de las cuentas y el balance total*/  
-        //printf("valor de la cuenta final \n\n");
+        printf("valores de las cuentas al final \n\n");
         
         //muestro el valor final de cada cuenta y la suma
       for(i=0;i<nroCuentas;i++){
@@ -114,7 +114,7 @@ int main(int argc, char *argv[]){
               Memoria[atoi(argv[5])] = 0;//desaprovo
           }
 
-  printf("\FINALIZÓ....\n");
+  //printf("\FINALIZÓ....\n");
 return 0;
 
 }
@@ -122,7 +122,7 @@ return 0;
 	
 void *realizarTransferencia(void *p){
 	/*Cada hilo debe seleccionar aleatoriamente dos cuentas*/
-        printf("\nEn transferencia....");
+        //printf("\nEn transferencia....");
         srand(rand());
         int nTranferencias=cantCorrer;
 //el while es para el manejo de número de transacciones que hará que sera igual el tiempo que corre
