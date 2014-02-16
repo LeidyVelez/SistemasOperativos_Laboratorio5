@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 		parametrosMain[k]=(0);
 		}
 	/*Manejo de archivo*/
-        file=fopen("archivoVectores.txt","r");
+        file=fopen(argv[2],"r");
 	    if(file==NULL)return(printf("Error al abrir, el archivo no existe!n"));
 	k=0;
 	 while((fgets(cadena,1024,file)) != NULL)    {       
@@ -67,7 +67,8 @@ int main(int argc, char *argv[])
 tam=k-1;
 fclose(file);       
 /***********Uso de la función execl para llamar al programa que proceso los vectores de prueba********************/
-	strcpy(cadena, "./main"); /**Guardo el nombre del archivo ejecutable**/
+	strcpy(cadena, "./");
+	strcat(cadena, argv[1]);/**Guardo el nombre del archivo ejecutable**/
 	/*Se llama la función execl  con los parámetros numero_hilos cantidad_tiempo_a_correr numero_cuentas valor_inicial 		CANTIDAD_DE_REPETICIONES_DE_ESTE_VECTOR */
 	sprintf(nroHilos, "%d", parametrosMain[0]); 
 	sprintf(cantidadTiempoCorrer, "%d", parametrosMain[1]);
