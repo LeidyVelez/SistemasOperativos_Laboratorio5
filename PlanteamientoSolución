@@ -2,6 +2,15 @@ Planteamiento inicial de solución:
 
 
 
+problemas:
+
+rand
+
+guardado en memoria, al momento de saber que vector era y que iteracion era, se detecto porq estaba solo mostrando 2
+iteraciones por cada vector, lo q se hizo para arreglarlo fue poner un contador q me fuera guarddon en un campo 
+diferente cada ves q entraba al main, igualmente al salir usando el contador
+
+
 
 
 Planteamiento Final de solución: 
@@ -21,7 +30,5 @@ corren al tiempo, luego de realizar todas las transacciones de los nprocesos, se
 y con este miramos si el vector paso o no paso y se guarda en un dato q el hilo principal del otro programa lee e imprime
 si las transacciones se dieron satisfactoriamente
 
-problemas
 
-rand
-guardado en memoria, al momento de saver q vector era y que iteracion era
+
