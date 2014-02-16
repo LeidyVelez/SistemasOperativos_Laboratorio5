@@ -11,8 +11,8 @@
 
 
 /*Variables globales y protipos de funciones*/
-#define MAX_THREADS     6 //DEBE MODIFICARSE PARA CAPTURARSE EN TIEMPO DE COMPILACIÓN!!!
-#define MAX_CUENTAS 10 //TAMBIÉN HAY QUE MODIFICARLA!!!!
+#define MAX_THREADS     6 
+#define MAX_CUENTAS 10 
 /*----------------------------------------------------------------------------------------*/
 void *realizarTransferencia(void *p);
 /*----------------------------------------------------------------------------------------*/
