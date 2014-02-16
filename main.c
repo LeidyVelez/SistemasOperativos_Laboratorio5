@@ -16,7 +16,7 @@
 /*----------------------------------------------------------------------------------------*/
 void *realizarTransferencia(void *p);
 /*----------------------------------------------------------------------------------------*/
-int i, rndCuenta, nroHilos, cantCorrer, nroCuentas, valorIni=0,nCuentas[1];
+int i, rndCuenta, nroHilos, cantCorrer, nroCuentas, valorIni=0,nCuentas[1],sumbalance=0;;
 char *numeroHilos, *cantidadTiempoCorrer, *valorInicial, *numeroCuentas, *nombreArchivo;
 char final[10];
 
@@ -45,6 +45,13 @@ t_Cuentas Cuentas[MAX_CUENTAS];
 /*----------------------------------------------------------------------------------------*/
 
 int main(int argc, char *argv[]){
+	//variables guardado de datos
+        int Id_Memoria;
+        int *Memoria = NULL;
+        const int SIZE = 1024;
+        key_t Clave=123;
+
+	
         pthread_attr_t attr;
          pthread_attr_init (&attr);
 	pthread_t h[10];
@@ -78,12 +85,36 @@ int main(int argc, char *argv[]){
               pthread_join(h[i],NULL);
            }
         /*Se Imprime el valor de las cuentas y el balance total*/  
-        printf("Valor de la Cuenta1 después de la transferencia: %d \n",Cuentas[cuenta1].monto);
-	printf("Valor de la cuenta2 después de la transferencia: %d \n",Cuentas[numcuenta2].monto);
-	montoTotalCuentas= (Cuentas[cuenta1].monto)+(Cuentas[numcuenta2].monto);
-	printf("\nBalance total de las cuentas: %d", montoTotalCuentas);
+        //printf("valor de la cuenta final \n\n");
+        
+        //muestro el valor final de cada cuenta y la suma
+      for(i=0;i<nroCuentas;i++){
+          printf("Cuenta%d : %d \n",i+1,Cuentas[i].monto);
+          sumbalance=sumbalance+Cuentas[i].monto;
+       }
+	printf("\nBalance total de las cuentas: %d", sumbalance);
+	
+      //abro memoria pa guardar si paso el vector o no
+      Id_Memoria = shmget(Clave, SIZE, IPC_EXCL | 0666 );
+      if (Id_Memoria == -1) 
+       {  
+        printf("No consigo Id para memoria compartida\n");
+        exit (0);
+       }
+      Memoria = (int *)shmat (Id_Memoria, (int *)0, 0);
+     if (Memoria == NULL) 
+       { 
+         printf("No consigo memoria compartida");
+         exit (0);
+     }
+     Memoria[0] = Id_Memoria;
+         if(sumbalance==nroCuentas*valorIni){//verifico si el dinero es el mismo
+            Memoria[atoi(argv[5])] = 1;//aprovo
+         }else{
+              Memoria[atoi(argv[5])] = 0;//desaprovo
+          }
+
   printf("\FINALIZÓ....\n");
-  printf("\nacabo....\n");
 return 0;
 
 }
@@ -97,10 +128,10 @@ void *realizarTransferencia(void *p){
 //el while es para el manejo de número de transacciones que hará que sera igual el tiempo que corre
 	//que se ingresa como parámetro
         while (nTranferencias>0){  
-        cuenta1=(rand()%nroCuentas)+1;
-        numcuenta1=(rand()%nroCuentas)+1;
-        numcuenta2=(rand()%nroCuentas)+1;
-        montoTrasferencia=(rand()%Cuentas[cuenta1].monto)+1;
+        int cuenta1=(rand()%nroCuentas);
+        int numcuenta1=(rand()%nroCuentas);
+        int numcuenta2=(rand()%nroCuentas);
+        int montoTrasferencia=(rand()%Cuentas[cuenta1].monto);
     	
 	if(Cuentas[cuenta1].semaforo){
             Cuentas[cuenta1].semaforo=false;
@@ -109,8 +140,8 @@ void *realizarTransferencia(void *p){
 //cuando las 2 tienen exito hace la transferencia
             if(Cuentas[numcuenta2].semaforo){
                 Cuentas[numcuenta2].semaforo=false;
-                printf("\n %d.%d.%d..\n",cuenta1,numcuenta2,montoTrasferencia);
-                  printf("numero transfer %d \ncuenta2 antes %d \n",nTranferencias,Cuentas[numcuenta2].monto);
+               // printf("\n %d.%d.%d..\n",cuenta1,numcuenta2,montoTrasferencia);
+               //   printf("numero transfer %d \ncuenta2 antes %d \n",nTranferencias,Cuentas[numcuenta2].monto);
 		Cuentas[cuenta1].monto=Cuentas[cuenta1].monto-montoTrasferencia;
                 Cuentas[numcuenta2].monto=Cuentas[numcuenta2].monto+montoTrasferencia;
               Cuentas[numcuenta2].semaforo=true;
