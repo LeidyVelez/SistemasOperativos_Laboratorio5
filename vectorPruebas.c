@@ -9,7 +9,7 @@
 /***************************Variables globales******************************************/
 FILE *file;
 int tam=20; /*Número máximo de parámetros*/
-int i=0;
+int i=0,j;
 int* parametrosMain;
 char cadena[150], nroHilos[5], cantidadTiempoCorrer[5], numeroCuentas[5], valorInicial[30], cantidadRepeticiones[5],vector[5],iteracion[5];
 /*************************************************************************************/
@@ -65,15 +65,16 @@ int main(int argc, char *argv[])
 
    	 }
 tam=k-1;
-fclose(file);       
+fclose(file);
+for(j=0;j<sizeof(parametrosMain);j++){
 /***********Uso de la función execl para llamar al programa que proceso los vectores de prueba********************/
 	strcpy(cadena, "./");
 	strcat(cadena, argv[1]);/**Guardo el nombre del archivo ejecutable**/
 	/*Se llama la función execl  con los parámetros numero_hilos cantidad_tiempo_a_correr numero_cuentas valor_inicial 		CANTIDAD_DE_REPETICIONES_DE_ESTE_VECTOR */
-	sprintf(nroHilos, "%d", parametrosMain[0]); 
-	sprintf(cantidadTiempoCorrer, "%d", parametrosMain[1]);
-	sprintf(numeroCuentas, "%d", parametrosMain[2]);
-	sprintf(valorInicial, "%d", parametrosMain[3]);
+	sprintf(nroHilos, "%d", parametrosMain[j*5]); 
+	sprintf(cantidadTiempoCorrer, "%d", parametrosMain[(j*5)+1]);
+	sprintf(numeroCuentas, "%d", parametrosMain[(j*5)+2]);
+	sprintf(valorInicial, "%d", parametrosMain[(j*5)+3]);
 	//sprintf(cantidadRepeticiones, "%d", parametrosMain[4]); 
 	strcat(cadena," ");	
 	strcat(cadena, nroHilos);
@@ -85,27 +86,29 @@ fclose(file);
 	strcat(cadena, valorInicial );
 
 	 //ejecuto el programa las veces q me indique el archivo
-        for(i=0;i<parametrosMain[4];i++){
+        for(i=0;i<parametrosMain(j*5)+4];i++){
            hilo_rep=fork();
            if(hilo_rep==0){
-             sprintf(vector, "%d", (1*2)+i); //agrego este dato para el guardado de memoria
+             sprintf(vector, "%d", ((j+1)*2)+i); //agrego este dato para el guardado de memoria
              strcat(cadena, " ");
 	     strcat(cadena, vector );
  	     //printf("%s \n", cadena);
 	     execl("/bin/sh","/bin/sh","-c",cadena,NULL);
            }
          }
-        for(i=0;i<parametrosMain[4];i++){
+        for(i=0;i<parametrosMain[(j*5)+4];i++){
            wait(&status_n);
           }
-         for(i=0;i<parametrosMain[4];i++){
-              if(Memoria[(1*2)+i]==1){//saco el dato que guarde en el progama main de todos los hilos
-              printf("\nVector #1 en la iter %d : PASO\n", i+1);
+}
+for(j=0;j<sizeof(parametrosMain);j++){
+         for(i=0;i<parametrosMain[(j*5)+4];i++){
+              if(Memoria[((j+1)*2)+i]==1){//saco el dato que guarde en el progama main de todos los hilos
+              printf("\nVector #%d en la iter %d : PASO\n",j+1, i+1);
                   }else{
-              printf("\nVector #1 en la iter %d : NO PASO\n", i+1);
+              printf("\nVector #%d en la iter %d : NO PASO\n",j+1, i+1);
               }
          }
-       
+}   
        printf("termino programa \n");
        
 shmctl(Memoria[0], IPC_RMID, (struct shmid_ds *)NULL);
