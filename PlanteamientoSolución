@@ -5,3 +5,23 @@ Planteamiento inicial de solución:
 
 
 Planteamiento Final de solución: 
+se lanza principalmente el programa (vectorPruebas.c) el cual lee como entrada el nombre del otro programa (main) 
+y un archivo con los vectores de prueba (archivoVectores.txt) , se sacan los datos del archivo y dependiendo del
+numero de vectores se ejecuta el programa n veces, cada vector tiene un parametro en el cual tambien se ejecutara
+n iteraciones que tenga cada vector, al ingresar a main este programa lee los parametros de entrada que le llegan 
+numero de hilos, cantidad de tiempo a correr(numero de veces que correra cada hilo), numero de cuentas que el mismo hilo
+principal crea, el valor inicial que se le asignara a cada cuenta y por ultimo un parametro para ayudarnos a guardar
+en la memoria compartida si el vector pasa o no pasa en todas sus iteraciones, dentro del hilo (main) este crera tantos
+procesos como le lleguen por parametro y creara nprocesos de la funcion (realizarTransferencia) la cual coje
+aleatoriamente 2 cuenta y un monto menor a lo que tenga la cuenta 1 y pasa dicho monto de la cuenta 1 a la cueenta 2.
+
+se uso un campo .semaforo tipo bool el cual nos ayudara en cuanto al manejos de condicion de carrera y con estos
+semaforos q cada cuenta tiene se logro que solo un proceso pudiera estar modificando esta cuenta, cuendo todos estos 
+corren al tiempo, luego de realizar todas las transacciones de los nprocesos, se muestra por pantalla el balance total
+y con este miramos si el vector paso o no paso y se guarda en un dato q el hilo principal del otro programa lee e imprime
+si las transacciones se dieron satisfactoriamente
+
+problemas
+
+rand
+guardado en memoria, al momento de saver q vector era y que iteracion era
