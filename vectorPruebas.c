@@ -11,7 +11,7 @@ FILE *file;
 int tam=20; /*Número máximo de parámetros*/
 int i=0,j,campoMemoria=1;
 int* parametrosMain;
-char cadena[150], nroHilos[5], cantidadTiempoCorrer[5], numeroCuentas[5], valorInicial[30], cantidadRepeticiones[5],vector[5],iteracion[5];
+char cadena[150], nroHilos[5], cantidadTiempoCorrer[5], numeroCuentas[5], valorInicial[30], cantidadRepeticiones[5],varMemoria[5],iteracion[5];
 /*************************************************************************************/
 
 
@@ -85,16 +85,15 @@ for(j=0;j<sizeof(parametrosMain);j++){
 	strcat(cadena, " ");
 	strcat(cadena, valorInicial );
 
-	 //ejecuto el programa las veces q me indique el archivo
+	 //ejecuto el programa las veces que indica el archivo
 	
         for(i=0;i<parametrosMain(j*5)+4];i++){
            hilo_rep=fork();
            if(hilo_rep==0){
-             sprintf(vector, "%d", (campoMemoria); //agrego este dato para el guardado de memoria
+             sprintf(varMemoria, "%d", (campoMemoria); //agrego este dato para el guardado de memoria
              strcat(cadena, " ");
-	     strcat(cadena, vector );
- 	     //printf("%s \n", cadena);
-	     execl("/bin/sh","/bin/sh","-c",cadena,NULL);
+	     strcat(cadena, varMemoria );
+ 	     execl("/bin/sh","/bin/sh","-c",cadena,NULL);
            }
            campoMemoria++;
          }
@@ -103,17 +102,17 @@ for(j=0;j<sizeof(parametrosMain);j++){
           }
 }
 campoMemoria=1;
-for(j=0;j<sizeof(parametrosMain);j++){
-         for(i=0;i<parametrosMain[(j*5)+4];i++){
-              if(Memoria[(campoMemoria]==1){//saco el dato que guarde en el progama main de todos los hilos
-              printf("\nVector #%d en la iter %d : PASO\n",j+1, i+1);
+for(j=0;j<sizeof(parametrosMain);j++){ //Indica el vector en el que se está realizando el proceso
+         for(i=0;i<parametrosMain[(j*5)+4];i++){ //Indica la iteración en la que se encuentra el proceso del vector en cuestión
+              if(Memoria[(campoMemoria]==1){//saco el dato que guardé en el programa main de todos los hilos
+              printf("\nVector #%d en la iter %d : pasó\n",j+1, i+1);
                   }else{
-              printf("\nVector #%d en la iter %d : NO PASO\n",j+1, i+1);
+              printf("\nVector #%d en la iter %d : no pasó\n",j+1, i+1);
               }
               campoMemoria++;
          }
 }   
-       printf("termino programa \n");
+       printf("Termina programa \n");
        
 shmctl(Memoria[0], IPC_RMID, (struct shmid_ds *)NULL);
 
