@@ -1,34 +1,52 @@
 Planteamiento inicial de solución:
 
+Se contextualizó el problema dado como una serie de operaciones entre cuentas bancarias, entre ellas: 
+Depósito, retiro y transferencia. Ésta última contiene a las demás. 
+En principio se pensó en reservar un espacio de memoria para cada cuenta creada, e ingresarle a cada cuenta un valor inicial.
+Luego se creaban la cantidad de procesos que el usuario ingresaba en el programa principal y a partir de esto considerar 
+que cada hilo ejecutara la función para transferir dinero entre dos cuentas. Estas dos cuentas se seleccionarían de manera 
+aleatoria con valores entre el 1 y el nro de cuentas que se había ingresado anteriormente. 
+Luego se intentaba hacer que las cuentas no fuesen la misma, para que la transferencia se efectuara correctamente.
+Ya teniendo las cuentas, el primer hilo seleccionaba un valor aleatorio para realizar la transfenrecia (dinero), ahora
+a la cuenta número 2 se le sumará el monto que se le descuenta a la cuenta 1 con el valor de la transferencia. 
 
-
-problemas:
-
-rand
-
-guardado en memoria, al momento de saber que vector era y que iteracion era, se detecto porq estaba solo mostrando 2
-iteraciones por cada vector, lo q se hizo para arreglarlo fue poner un contador q me fuera guarddon en un campo 
-diferente cada ves q entraba al main, igualmente al salir usando el contador
-
+Finalmente el programa principal imprime el balance de las cuentas, y este programa principal será llamado por otro 
+donde se abrirá un archivo que contiene unos vectores de prueba con los parámetros para realizar las operaciones.
 
 
 
 Planteamiento Final de solución: 
-se lanza principalmente el programa (vectorPruebas.c) el cual lee como entrada el nombre del otro programa (main) 
-y un archivo con los vectores de prueba (archivoVectores.txt) , se sacan los datos del archivo y dependiendo del
-numero de vectores se ejecuta el programa n veces, cada vector tiene un parametro en el cual tambien se ejecutara
-n iteraciones que tenga cada vector, al ingresar a main este programa lee los parametros de entrada que le llegan 
-numero de hilos, cantidad de tiempo a correr(numero de veces que correra cada hilo), numero de cuentas que el mismo hilo
-principal crea, el valor inicial que se le asignara a cada cuenta y por ultimo un parametro para ayudarnos a guardar
-en la memoria compartida si el vector pasa o no pasa en todas sus iteraciones, dentro del hilo (main) este crera tantos
-procesos como le lleguen por parametro y creara nprocesos de la funcion (realizarTransferencia) la cual coje
-aleatoriamente 2 cuenta y un monto menor a lo que tenga la cuenta 1 y pasa dicho monto de la cuenta 1 a la cueenta 2.
 
-se uso un campo .semaforo tipo bool el cual nos ayudara en cuanto al manejos de condicion de carrera y con estos
-semaforos q cada cuenta tiene se logro que solo un proceso pudiera estar modificando esta cuenta, cuendo todos estos 
+
+Se lanza el programa (vectorPruebas.c) el cual lee como entrada el nombre del otro programa (main) 
+y un archivo con los vectores de prueba (archivoVectores.txt) , se sacan los datos del archivo y dependiendo del
+número de vectores se ejecuta el programa n veces, cada vector tiene un parámetro en el cual también se ejecutará
+n iteraciones que tenga cada vector, al ingresar al main, este programa lee los parámetros de entrada que le llegan desde 
+el programa vectorPruebas.c, que son: numero de hilos, cantidad de tiempo a correr(numero de veces que correra cada hilo), 
+numero de cuentas que el mismo hilo.
+El programa principal crea el valor inicial que se le asignará a cada cuenta y por último un parametro para ayudarnos a guardar
+en la memoria compartida si el vector pasa o no pasa en todas sus iteraciones, dentro del hilo (main) este creará tantos
+procesos como le lleguen por parametro y creará nprocesos de la función (realizarTransferencia), la cual toma
+aleatoriamente 2 cuentas y un monto menor a lo que tenga la cuenta 1 y pasa dicho monto de la cuenta 1 a la cuenta 2.
+
+Consideraciones: se usó un campo .semaforo tipo bool el cual contribuye  a los manejos de condicion de carrera y con estos
+semáforos q cada cuenta tiene se logra que solo un proceso pueda estar modificando esta cuenta, cuando todos estos 
 corren al tiempo, luego de realizar todas las transacciones de los nprocesos, se muestra por pantalla el balance total
 y con este miramos si el vector paso o no paso y se guarda en un dato q el hilo principal del otro programa lee e imprime
-si las transacciones se dieron satisfactoriamente
+si las transacciones se dieron satisfactoriamente.
 
+
+
+
+
+Problemas encontrados:
+
+1. Uso de la función rand de c.
+
+- Guardado cuando se necesitaba saber que vector se estaba manejando y en que iteración se encontraba,  se detectó que sólo 
+se mostraban dos iteraciones por vector.
+
+2.  Implementar un contador que guardara un valor diferente cada ves que entraba al main, igualmente al salir del programa 
+principal.
 
 
