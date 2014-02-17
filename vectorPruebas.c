@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
         int *Memoria = NULL;
         const int SIZE = 1024;
         key_t Clave=123;
-        //creacion de memoria compartida
+        //creación de memoria compartida
         Id_Memoria = shmget(Clave, SIZE, IPC_CREAT | 0666 );
          if (Id_Memoria == -1) 
            {  
