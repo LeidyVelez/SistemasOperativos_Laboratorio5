@@ -87,10 +87,10 @@ for(j=0;j<sizeof(parametrosMain);j++){
 
 	 //ejecuto el programa las veces que indica el archivo
 	
-        for(i=0;i<parametrosMain(j*5)+4];i++){
+        for(i=0;i<parametrosMain[(j*5)+4];i++){
            hilo_rep=fork();
            if(hilo_rep==0){
-             sprintf(varMemoria, "%d", (campoMemoria); //agrego este dato para el guardado de memoria
+             sprintf(varMemoria, "%d", (campoMemoria)); //agrego este dato para el guardado de memoria
              strcat(cadena, " ");
 	     strcat(cadena, varMemoria );
  	     execl("/bin/sh","/bin/sh","-c",cadena,NULL);
@@ -104,7 +104,7 @@ for(j=0;j<sizeof(parametrosMain);j++){
 campoMemoria=1;
 for(j=0;j<sizeof(parametrosMain);j++){ //Indica el vector en el que se está realizando el proceso
          for(i=0;i<parametrosMain[(j*5)+4];i++){ //Indica la iteración en la que se encuentra el proceso del vector en cuestión
-              if(Memoria[(campoMemoria]==1){//saco el dato que guardé en el programa main de todos los hilos
+              if(Memoria[(campoMemoria)]==1){//saco el dato que guardé en el programa main de todos los hilos
               printf("\nVector #%d en la iter %d : pasó\n",j+1, i+1);
                   }else{
               printf("\nVector #%d en la iter %d : no pasó\n",j+1, i+1);
