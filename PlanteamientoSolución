@@ -51,3 +51,17 @@ principal.
 3. Al usar la función rand de c los valores para tomar las cuentas, en cada iteración siempre son los mismos, aún cuando
 se combine esta función con una srand(), que genera valores diferentes.
 
+
+
+Comparación entre soluciones propuestas:
+
+- En principio, se propuso una solución no tan técnica o de programación para el problema. Se trató de contextualizar 
+el enunciado y concretar que tipo de operaciones era necesario tener en cuenta.
+- En la segunda solución, ya desde un punto de vista más elaborado y de programación, se plantea que tipo de elementos
+se usan para la comunicación entre los procesos, el funcionamiento de la memoria compartida y los semáforos para 
+evitar condiciones de carrera. Ahora las operaciones planteadas para efectuar sobre las cuentas, son mucho más claras
+en esta segunda propuesta, además, de que se considera cada parámetro influyente tanto para la ejecución como para 
+la construcción de los resultados.
+
+
+
