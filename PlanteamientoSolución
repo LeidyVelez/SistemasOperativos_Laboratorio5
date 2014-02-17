@@ -41,12 +41,13 @@ si las transacciones se dieron satisfactoriamente.
 
 Problemas encontrados:
 
-1. Uso de la función rand de c.
-
-- Guardado cuando se necesitaba saber que vector se estaba manejando y en que iteración se encontraba,  se detectó que sólo 
+1. Guardado cuando se necesitaba saber que vector se estaba manejando y en que iteración se encontraba,  se detectó que sólo 
 se mostraban dos iteraciones por vector.
 
 2.  Implementar un contador que guardara un valor diferente cada ves que entraba al main, igualmente al salir del programa 
 principal.
 
+
+3. Al usar la función rand de c los valores para tomar las cuentas, en cada iteración siempre son los mismos, aún cuando
+se combine esta función con una srand(), que genera valores diferentes.
 
