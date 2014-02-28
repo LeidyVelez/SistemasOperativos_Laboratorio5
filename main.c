@@ -8,11 +8,14 @@
 #include <sys/shm.h>
 #include <pthread.h>
 #include <time.h>
+#include <semaphore.h>
 
 
 /*Variables globales y protipos de funciones*/
 #define MAX_THREADS     6 
 #define MAX_CUENTAS 10 
+
+sem_t sem1;
 /*----------------------------------------------------------------------------------------*/
 void *realizarTransferencia(void *p);
 /*----------------------------------------------------------------------------------------*/
@@ -38,13 +41,15 @@ typedef struct
   {   
    int idCuenta; 
    int monto;
-   bool semaforo;
   } t_Cuentas;
 t_Cuentas Cuentas[MAX_CUENTAS];
 
 /*----------------------------------------------------------------------------------------*/
 
 int main(int argc, char *argv[]){
+	//variables semaforo
+	sem_init(&sem1,0,1);
+	srand(atoi(argv[5]));
 	//variables guardado de datos
         int Id_Memoria;
         int *Memoria = NULL;
@@ -73,7 +78,6 @@ int main(int argc, char *argv[]){
 	for(i=0; i<=nroCuentas;i++){
 		Cuentas[i].idCuenta=i; /*Guardo el identificador de la cuenta*/
 		Cuentas[i].monto=valorIni; /*Guardo el valor inicial de cada cuenta*/
-                Cuentas[i].semaforo=true; /*Guardo el semáforo de cada cuenta*/
 	}
             for (i=0; i<nroHilos; i++) 
       		{  
@@ -112,6 +116,7 @@ int main(int argc, char *argv[]){
          }else{
               Memoria[atoi(argv[5])] = 0;//desapruebo
           }
+          sem_destroy(&sem1);
 return 0;
 
 }
@@ -119,7 +124,7 @@ return 0;
 	
 void *realizarTransferencia(void *p){
 	/*Cada hilo debe seleccionar aleatoriamente dos cuentas*/
-        srand(rand());
+
         int nTranferencias=cantCorrer;
 //el while es para el manejo de número de transacciones que hará que será igual el tiempo que corre
 	//que se ingresa como parámetro
@@ -128,22 +133,13 @@ void *realizarTransferencia(void *p){
          cuenta1=(rand()%nroCuentas);
         numcuenta1=(rand()%nroCuentas);
         numcuenta2=(rand()%nroCuentas);
-        montoTrasferencia=(rand()%Cuentas[cuenta1].monto);
-    	
-	if(Cuentas[cuenta1].semaforo){
-            Cuentas[cuenta1].semaforo=false;
-//se usa un semáforo interno dentro de cada cuenta para poder ver si se puede acceder a ella
-//si ingresa a la primera pero no puede entrar a la segunda libera la primera y vuelve a intentar. 
-//Cuando las 2 tienen éxito hace la transferencia
-            if(Cuentas[numcuenta2].semaforo){
-                Cuentas[numcuenta2].semaforo=false;
+        sem_wait(&sem1);
+                montoTrasferencia=(rand()%Cuentas[cuenta1].monto);
 		Cuentas[cuenta1].monto=Cuentas[cuenta1].monto-montoTrasferencia;
                 Cuentas[numcuenta2].monto=Cuentas[numcuenta2].monto+montoTrasferencia;
-              Cuentas[numcuenta2].semaforo=true;
+        sem_post(&sem1);
               nTranferencias--;
-            }
-          Cuentas[cuenta1].semaforo=true;
-        }	
+	
         }
 }
 
