@@ -15,7 +15,7 @@
 #define MAX_THREADS     6 
 #define MAX_CUENTAS 10 
 
-sem_t sem1;
+sem_t sem1[200];
 /*----------------------------------------------------------------------------------------*/
 void *realizarTransferencia(void *p);
 /*----------------------------------------------------------------------------------------*/
@@ -47,8 +47,7 @@ t_Cuentas Cuentas[MAX_CUENTAS];
 /*----------------------------------------------------------------------------------------*/
 
 int main(int argc, char *argv[]){
-	//variables semaforo
-	sem_init(&sem1,0,1);
+
 	srand(atoi(argv[5]));
 	//variables guardado de datos
         int Id_Memoria;
@@ -78,6 +77,7 @@ int main(int argc, char *argv[]){
 	for(i=0; i<=nroCuentas;i++){
 		Cuentas[i].idCuenta=i; /*Guardo el identificador de la cuenta*/
 		Cuentas[i].monto=valorIni; /*Guardo el valor inicial de cada cuenta*/
+		sem_init(&sem1[i],0,1);/* inicializamos los semaforos necesarios*/
 	}
             for (i=0; i<nroHilos; i++) 
       		{  
@@ -130,16 +130,19 @@ void *realizarTransferencia(void *p){
 	//que se ingresa como parámetro
         int cuenta1, numcuenta1, numcuenta2, montoTrasferencia;
         while (nTranferencias>0){  
-         cuenta1=(rand()%nroCuentas);
+        cuenta1=(rand()%nroCuentas);
         numcuenta1=(rand()%nroCuentas);
         numcuenta2=(rand()%nroCuentas);
-        sem_wait(&sem1);
+        if(sem_trywait(&sem1[cuenta1])==0){// si el valor q retorna es 0 es porque lo bloquio, en caso de q el semaforo esta positivo devuelve un -1 indicando q no lo pudo bloquear
+              if(sem_trywait(&sem1[numcuenta2])==0){//se verifica que la cuenta 2 se pueda modificar
                 montoTrasferencia=(rand()%Cuentas[cuenta1].monto);
 		Cuentas[cuenta1].monto=Cuentas[cuenta1].monto-montoTrasferencia;
                 Cuentas[numcuenta2].monto=Cuentas[numcuenta2].monto+montoTrasferencia;
-        sem_post(&sem1);
-              nTranferencias--;
-	
+                nTranferencias--;
+	        sem_post(&sem1[numcuenta2]);//libero cuenta 2
+              }
+               sem_post(&sem1[cuenta1]); //libero cuenta 1     
+        }  
         }
 }
 
